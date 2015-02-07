@@ -46,7 +46,8 @@
 		    <form:label path="emailAddress">Email address:</form:label><form:input path="emailAddress"/><br>
 		    <form:label path="password">password:</form:label><form:password path="password"/><br>
 		    <form:label path="phoneNumber">Phone number:</form:label><form:input path="phoneNumber"/><br>
-		    <form:label path="creditCard">Credit Card:</form:label><form:input path="creditCard"/><br>
+            <form:label path="creditCard">Credit Card:</form:label><form:input path="creditCard"/><br>
+            <form:label path="ccExpDate">Expiration date:</form:label><form:input path="ccExpDate"/><br>
 		    <input type="submit" value="Update Account"/>
 		</div>
 	</form:form>

@@ -2,6 +2,7 @@ package net.cozz.danco;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +45,13 @@ public class UserInfoController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String processLogin(HttpSession session,
-                               @ModelAttribute @Valid UserInfo user) {
+                               @ModelAttribute @Valid UserInfo user,
+                               Errors errors) {
+
+        if (errors.hasErrors()) {
+            LOGGER.info("User form submitted with errors.");
+            return "login";
+        }
 
         session.setAttribute("username", user.getName());
         session.setAttribute("userinfo", user);

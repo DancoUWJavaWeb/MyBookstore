@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserInfo implements Serializable {
@@ -15,10 +16,10 @@ public class UserInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Size(min=2, max=40)
+	@Size(min=2, max=40, message = "Your name must be between 2 & 40 characters")
 	private String name;
 
-    @Size(min = 8, max = 16)
+    @Size(min = 8, max = 16, message = "You must choose a password between 8 and 16 characters inclusive")
 	private String password;
 
 
@@ -26,15 +27,14 @@ public class UserInfo implements Serializable {
             message="must be a valid email address in an acceptable domain: .com, .net, .org, .edu, .io, .info")
 	private String emailAddress;
 
-    @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}")
+    @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}", message = "Please enter a valid phone number.")
 	private String phoneNumber;
 
-    @Pattern(regexp = "")
+//    @Pattern(regexp = "4\\d{15}")
 	private String creditCard;
 
-    @Future
-    @DateTimeFormat()
-    private String ccExpDate;
+//    @Future
+//    private Date ccExpDate;
 	
 	private List<MailingAddress> mailingAddresses = new ArrayList<MailingAddress>();
 	private List<String> creditCardNumbers = new ArrayList<String>();
@@ -80,14 +80,14 @@ public class UserInfo implements Serializable {
 	}
 
 
-    public String getCcExpDate() {
-        return ccExpDate;
-    }
-
-
-    public void setCcExpDate(String ccExpDate) {
-        this.ccExpDate = ccExpDate;
-    }
+//    public Date getCcExpDate() {
+//        return ccExpDate;
+//    }
+//
+//
+//    public void setCcExpDate(Date ccExpDate) {
+//        this.ccExpDate = ccExpDate;
+//    }
 
 
     public List<MailingAddress> getMailingAddresses() {
