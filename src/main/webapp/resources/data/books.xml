@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="bookManager" class="net.cozz.danco.SimpleBookManager">
+		<property name="books">
+			<list>
+				<ref bean="book1" />
+				<ref bean="book2" />
+				<ref bean="book3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="book1" class="net.cozz.danco.Book">
+		<property name="ISBN" value="978-0441569595" />
+		<property name="title" value="Neuromancer" />
+		<property name="description" value="Case had been the sharpest data-thief in the business, until vengeful former employees crippled his nervous system. But now a new and very mysterious employer recruits him for a last-chance run." />
+		<property name="author" value="William Gibson" />
+		<property name="genre" value="scifi" />
+		<property name="price" value="8.99" />
+	</bean>
+
+	<bean id="book2" class="net.cozz.danco.Book">
+		<property name="ISBN" value="978-0553293357" />
+		<property name="title" value="Foundation" />
+		<property name="description" value="For twelve thousand years the Galactic Empire has ruled supreme. Now it is dying. But only Hari Sheldon, creator of the revolutionary science of psychohistory, can see into the future--to a dark age of ignorance, barbarism, and warfare that will last thirty thousand years." />
+		<property name="author" value="Isaac Asimov" />
+		<property name="genre" value="scifi" />
+		<property name="price" value="14.50" />
+	</bean>
+
+	<bean id="book3" class="net.cozz.danco.Book">
+		<property name="ISBN" value="978-0553380163" />
+		<property name="title" value="A Brief History of Time" />
+		<property name="description" value="A landmark volume in science writing by one of the great minds of our time, Stephen Hawking’s book explores such profound questions as: How did the universe begin-and what made its start possible?" />
+		<property name="author" value="Stephen Hawking" />
+		<property name="genre" value="non-fiction" />
+		<property name="price" value="12.00" />
+	</bean>
+
+</beans>
