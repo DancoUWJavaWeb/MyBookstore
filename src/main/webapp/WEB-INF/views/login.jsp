@@ -17,7 +17,7 @@
 <%@ include file="header.jsp"%>
 
 <p>Welcome to <fmt:message key="title"/>, please enter your username and password</p>
-<form:form method="post" modelAttribute="userinfo">
+<form:form method="post" modelAttribute="userInfo">
 <div style="width:300px;text-align:right">
     <div class="formfield"><form:label path="name">Name:</form:label><form:input path="name"/><br></div>
     <div class="errors"><form:errors path="name" /></div>
