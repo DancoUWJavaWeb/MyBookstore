@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package net.cozz.danco;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,8 +17,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml")
-public class AppTests {
+localhostpublic class AppTests {
     private MockMvc mockMvc;
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -34,6 +33,6 @@ public class AppTests {
     public void simple() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("hello"));
+                .andExpect(view().name("home"));
     }
 }

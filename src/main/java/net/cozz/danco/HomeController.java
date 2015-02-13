@@ -26,7 +26,7 @@ public class HomeController {
 
 // Alternatively, we could be explicit about the setter
 //	@Autowired always works on interfaces, not classes/objects.
-//	
+//
 //	@Autowired
 //	public void setBookManager(BookManager bookManager) {
 //		this.bookManager = bookManager;

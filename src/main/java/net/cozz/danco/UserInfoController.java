@@ -45,11 +45,13 @@ public class UserInfoController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String processLogin(HttpSession session,
-                               @ModelAttribute @Valid UserInfo user,
+                               @ModelAttribute UserInfo user,
+                               Model model,
                                Errors errors) {
 
         if (errors.hasErrors()) {
             LOGGER.info("User form submitted with errors.");
+            model.addAttribute(user);
             return "login";
         }
 
@@ -98,7 +100,8 @@ public class UserInfoController {
     
     
     @RequestMapping(value = "/addAddress", method = RequestMethod.POST)
-    public String addAccount(HttpSession session, Model model, 
+    public String addAccount(HttpSession session,
+                             Model model,
     		@ModelAttribute @Valid MailingAddress address) {
     	
     	LOGGER.info("Adding new user address");
@@ -116,10 +119,17 @@ public class UserInfoController {
 
 
     @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
-    public String updateAccount(HttpSession session, Model model, 
-    		@ModelAttribute @Valid UserInfo userInfo) {
-    	
-    	if (session.getAttribute("userinfo") != null) {
+    public String updateAccount(HttpSession session,
+                                Model model,
+    		                    @ModelAttribute @Valid UserInfo userInfo,
+                                Errors errors) {
+        if (errors.hasErrors()) {
+            LOGGER.info("User form submitted with errors.");
+            model.addAttribute(userInfo);
+            return "login";
+        }
+
+        if (session.getAttribute("userinfo") != null) {
     		LOGGER.info("Retrieved userinfo object from session.");
     		UserInfo oldUserInfo = (UserInfo) session.getAttribute("userinfo");
     		userInfo.setMailingAddresses(oldUserInfo.getMailingAddresses());

@@ -44,7 +44,7 @@ public class Book {
 	public String getImage() {
 		return image;
 	}
-	public void setImages(String image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 	public double getPrice() {

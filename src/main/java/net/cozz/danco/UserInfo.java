@@ -30,11 +30,12 @@ public class UserInfo implements Serializable {
     @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}", message = "Please enter a valid phone number.")
 	private String phoneNumber;
 
-//    @Pattern(regexp = "4\\d{15}")
+    @Pattern(regexp = "4\\d{15}", message = "You need to provide a cc number.")
 	private String creditCard;
 
-//    @Future
-//    private Date ccExpDate;
+    @Future(message = "Your cc needs to expire in the future.")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private Date ccExpDate;
 	
 	private List<MailingAddress> mailingAddresses = new ArrayList<MailingAddress>();
 	private List<String> creditCardNumbers = new ArrayList<String>();
@@ -80,14 +81,14 @@ public class UserInfo implements Serializable {
 	}
 
 
-//    public Date getCcExpDate() {
-//        return ccExpDate;
-//    }
-//
-//
-//    public void setCcExpDate(Date ccExpDate) {
-//        this.ccExpDate = ccExpDate;
-//    }
+    public Date getCcExpDate() {
+        return ccExpDate;
+    }
+
+
+    public void setCcExpDate(Date ccExpDate) {
+        this.ccExpDate = ccExpDate;
+    }
 
 
     public List<MailingAddress> getMailingAddresses() {
