@@ -23,11 +23,13 @@ public class UserInfoController {
 	public ModelAndView displayLoginForm(HttpSession session) {
 		ModelAndView modelAndView = null;
 		
-		UserInfo userInfo = session.getAttribute("userinfo") == null ? new UserInfo() : (UserInfo) session.getAttribute("userinfo");
-		modelAndView = new ModelAndView("login", "userinfo", userInfo);
+		UserInfo userInfo = session.getAttribute("userInfo") == null
+                ? new UserInfo()
+                : (UserInfo) session.getAttribute("userInfo");
+		modelAndView = new ModelAndView("login", "userInfo", userInfo);
 		
 		// this is equivalent to returning a string and adding: 
-		//    model.addAttribute("userinfo", new UserInfo());
+		//    model.addAttribute("userInfo", new UserInfo());
 		// in this case you'd pass in the Model to the method
 		
 		return modelAndView;
@@ -45,19 +47,19 @@ public class UserInfoController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String processLogin(HttpSession session,
-                               @ModelAttribute UserInfo user,
                                Model model,
+                               @ModelAttribute @Valid UserInfo userInfo,
                                Errors errors) {
 
         if (errors.hasErrors()) {
             LOGGER.info("User form submitted with errors.");
-            model.addAttribute(user);
+            model.addAttribute(userInfo);
             return "login";
         }
 
-        session.setAttribute("username", user.getName());
-        session.setAttribute("userinfo", user);
-        LOGGER.info("Added userinfo object to session");
+        session.setAttribute("username", userInfo.getName());
+        session.setAttribute("userInfo", userInfo);
+        LOGGER.info("Added userInfo object to session");
         
         return "redirect:";
     }
@@ -66,7 +68,7 @@ public class UserInfoController {
     public String logout(HttpSession session) {
 
         session.removeAttribute("username");
-        session.removeAttribute("userinfo");
+        session.removeAttribute("userInfo");
         session.removeAttribute("cart");
         
         return "redirect:";
@@ -80,10 +82,10 @@ public class UserInfoController {
     	model.addAttribute("username", session.getAttribute("username"));
     	model.addAttribute("cart", session.getAttribute("cart"));
     	LOGGER.info("Added cart to model");
-    	Object obj = session.getAttribute("userinfo");
+    	Object obj = session.getAttribute("userInfo");
     	if (obj != null) {
-    		UserInfo userInfo = (UserInfo) session.getAttribute("userinfo");
-    		model.addAttribute("userinfo", userInfo);
+    		UserInfo userInfo = (UserInfo) session.getAttribute("userInfo");
+    		model.addAttribute("userInfo", userInfo);
     		List<MailingAddress> addresses = userInfo.getMailingAddresses();
     		if (addresses == null) {
     			addresses = new ArrayList<MailingAddress>();
@@ -91,8 +93,8 @@ public class UserInfoController {
     		model.addAttribute("addresses", addresses);
     		LOGGER.info("Added model param mailingAddresses of size: " + userInfo.getMailingAddresses().size());
     	} else {
-    		model.addAttribute("userinfo", new UserInfo());
-    		LOGGER.info("Unable to find userinfo object in session");
+    		model.addAttribute("userInfo", new UserInfo());
+    		LOGGER.info("Unable to find userInfo object in session");
     	}
     	
     	return "account";
@@ -106,14 +108,14 @@ public class UserInfoController {
     	
     	LOGGER.info("Adding new user address");
     	UserInfo userInfo = new UserInfo();
-    	if (session.getAttribute("userinfo") != null) {
-    		LOGGER.info("Retrieved userinfo object from session.");
-    		userInfo = (UserInfo) session.getAttribute("userinfo");
+    	if (session.getAttribute("userInfo") != null) {
+    		LOGGER.info("Retrieved userInfo object from session.");
+    		userInfo = (UserInfo) session.getAttribute("userInfo");
     	}
     	userInfo.addAddress(address);
-       	LOGGER.info(String.format("Added address %s to userinfo named %s", address.getStreetAddress(), userInfo.getName()));
-       	session.setAttribute("userinfo", userInfo);
-       	model.addAttribute("userinfo", userInfo);
+       	LOGGER.info(String.format("Added address %s to userInfo named %s", address.getStreetAddress(), userInfo.getName()));
+       	session.setAttribute("userInfo", userInfo);
+       	model.addAttribute("userInfo", userInfo);
     	return "redirect:";
     }
 
@@ -129,15 +131,15 @@ public class UserInfoController {
             return "login";
         }
 
-        if (session.getAttribute("userinfo") != null) {
-    		LOGGER.info("Retrieved userinfo object from session.");
-    		UserInfo oldUserInfo = (UserInfo) session.getAttribute("userinfo");
+    	if (session.getAttribute("userInfo") != null) {
+    		LOGGER.info("Retrieved userInfo object from session.");
+    		UserInfo oldUserInfo = (UserInfo) session.getAttribute("userInfo");
     		userInfo.setMailingAddresses(oldUserInfo.getMailingAddresses());
     	}
         session.setAttribute("username", userInfo.getName());
         model.addAttribute("username", userInfo.getName());
-       	session.setAttribute("userinfo", userInfo);
-       	model.addAttribute("userinfo", userInfo);
+       	session.setAttribute("userInfo", userInfo);
+       	model.addAttribute("userInfo", userInfo);
     	return "redirect:";
     }
 }
