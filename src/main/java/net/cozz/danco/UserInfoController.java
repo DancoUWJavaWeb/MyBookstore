@@ -109,7 +109,7 @@ public class UserInfoController {
 
         if (errors.hasErrors()) {
             LOGGER.info("Address form submitted with errors.");
-            model.addAttribute(mailingAddress);
+            model.addAttribute("mailingAddress", mailingAddress);
             model.addAttribute(session.getAttribute("userInfo"));
             return "account";
         }
@@ -145,6 +145,7 @@ public class UserInfoController {
     		UserInfo oldUserInfo = (UserInfo) session.getAttribute("userInfo");
     		userInfo.setMailingAddresses(oldUserInfo.getMailingAddresses());
     	}
+
         session.setAttribute("username", userInfo.getName());
         model.addAttribute("username", userInfo.getName());
        	session.setAttribute("userInfo", userInfo);

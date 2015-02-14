@@ -4,8 +4,9 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
-import java.util.Set;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import jdk.net.SocketFlow.Status;
 
@@ -171,14 +172,20 @@ public class UserInfoControllerTest {
     public void testInvalidAccountData() throws Exception {
         UserInfo userInfo = new UserInfo();
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = new GregorianCalendar();
+        cal.add(Calendar.MONTH, 1);
         MockHttpServletRequestBuilder srb = post("/updateAccount").session(mockSession)
-                .param("streetAddress", testStreetAddress)
-                .param("city", "")
-                .param("state", "")
-                .param("zip", testZipCode);
+                .param("name", testName)
+                .param("password", "")
+                .param("emailAddress", "")
+                .param("phoneNumber", "")
+                .param("creditCard", "")
+                .param("ccExpDate", dateFormat.format(cal.getTime()));
 
         mockMvc.perform(srb)
-                .andExpect(model().attributeHasFieldErrors("userInfo"));
+                .andExpect(model().attributeExists("userInfo"))
+                .andExpect(model().attributeHasErrors("userInfo"));
     }
 
 
