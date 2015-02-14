@@ -33,7 +33,7 @@
 	
 <c:choose>
 	<c:when test="${not empty books}">
-		<form:form action="/checkout" method="post" modelAttribute="userinfo">
+		<form:form action="/checkout" method="post" modelAttribute="userInfo">
 			<div style="width:300px;text-align:right">
 			    <input type="submit" value="checkout"/>
 			</div>

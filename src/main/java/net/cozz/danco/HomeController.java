@@ -65,7 +65,7 @@ public class HomeController {
         model.addAttribute("username", session.getAttribute("username"));
         model.addAttribute("cart", session.getAttribute("cart"));
 		model.addAttribute("books", bookManager.getBooks());
-		model.addAttribute("userinfo", session.getAttribute("userinfo"));
+		model.addAttribute("userInfo", session.getAttribute("userInfo"));
 
 		return "home";
 	}

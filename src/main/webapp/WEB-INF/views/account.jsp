@@ -21,8 +21,8 @@
 		<td><c:out value="${mailingAddress.streetAddress}" /></td>
 	</tr>
 	<tr>
-		<td><c:out value="${mailingAddress.city}" />, </td><td>
-		<c:out value="${mailingAddress.state}" /> </td><td><c:out value="${mailingAddress.zip}" /></td>
+		<td><c:out value="${mailingAddress.city}" /></td>,
+        <td><c:out value="${mailingAddress.state}" /> </td><td><c:out value="${mailingAddress.zip}" /></td>
 	</tr>
 	<br>
 </c:forEach>
@@ -30,17 +30,22 @@
 </c:otherwise>
 </c:choose>
 <br>
-	<form:form action="/addAddress" method="post" modelAttribute="address">
+	<form:form action="/addAddress" method="post" modelAttribute="mailingAddress">
 		<div style="width:500px;text-align:left">
 		    <form:label path="streetAddress">Street address:</form:label><form:input path="streetAddress"/><br>
-		    <form:label path="city">City:</form:label><form:input path="city"/>,
-		    <form:label path="state">State:</form:label><form:input size="2" path="state"/>&nbsp;
-		    <form:label path="zip">Zip:</form:label>&nbsp;<form:input size="5" path="zip"/><br>
+            <div class="errors"><form:errors path="streetAddress" /></div>
+		    <form:label path="city">City:</form:label><form:input path="city"/>
+            <div class="errors"><form:errors path="city" /></div>
+            <form:label path="state">State:</form:label><form:input size="2" path="state"/>&nbsp;
+            <div class="errors"><form:errors path="state" /></div>
+		    <form:label path="zip">Zip:</form:label><form:input size="5" path="zip"/><br>
+            <div class="errors"><form:errors path="zip" /></div>
+
 		    <input type="submit" value="Add Address"/>
 		</div>
 	</form:form>
 	<br>
-	<form:form action="/updateAccount" method="post" modelAttribute="userinfo">
+	<form:form action="/updateAccount" method="post" modelAttribute="userInfo">
 		<div style="width:500px;text-align:left">
             <div class="formfield"><form:label path="name">Name:</form:label><form:input path="name"/><br></div>
             <div class="errors"><form:errors path="name" /></div>

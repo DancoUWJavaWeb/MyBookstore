@@ -1,4 +1,14 @@
 <%@ include file="include.jsp" %>
+<style>
+    .formfield {
+    }
+
+    .errors {
+        color: red;
+        font-size: small;
+    }
+</style>
+
 <div style="text-align:right">
 <c:choose>
 	<c:when test="${empty username}">

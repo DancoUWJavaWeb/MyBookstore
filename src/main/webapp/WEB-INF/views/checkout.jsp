@@ -32,21 +32,21 @@
 	</form>
 	<br>
 	
-<form:form action="/checkout" method="post" modelAttribute="userinfo">
+<form:form action="/checkout" method="post" modelAttribute="userInfo">
 	<c:choose>
-		<c:when test="${empty userinfo}">
+		<c:when test="${empty userInfo}">
 			<p><font color="red"><c:out value="No shipping address on record, please add address prior to checkout."></c:out></font></p>
 		</c:when>
 		<c:otherwise>
 		<c:choose>
-			<c:when test="${empty userinfo.creditCard}">
+			<c:when test="${empty userInfo.creditCard}">
 			<p><font color="red"><c:out value="No credit card on record, please add one prior to checkout."></c:out></font></p>
 			    <a href="<c:url value="/account"/>">Account</a><br>	
 			</c:when>
 			<c:otherwise>
 				<table border="1">
 				<thead>Select destination:</thead>
-				<c:forEach items="${userinfo.mailingAddresses}" var="mailingAddress">
+				<c:forEach items="${userInfo.mailingAddresses}" var="mailingAddress">
 					<table>
 					<tr>
 					<td><input type="radio" id="selectedAddress" value="${mailingAddress.index}"></td>

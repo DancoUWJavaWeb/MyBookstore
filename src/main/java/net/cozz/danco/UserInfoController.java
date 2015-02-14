@@ -78,7 +78,7 @@ public class UserInfoController {
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String account(HttpSession session, Model model) {
     	
-    	model.addAttribute("address", new MailingAddress());
+    	model.addAttribute("mailingAddress", new MailingAddress());
     	model.addAttribute("username", session.getAttribute("username"));
     	model.addAttribute("cart", session.getAttribute("cart"));
     	LOGGER.info("Added cart to model");
@@ -90,7 +90,7 @@ public class UserInfoController {
     		if (addresses == null) {
     			addresses = new ArrayList<MailingAddress>();
     		}
-    		model.addAttribute("addresses", addresses);
+            model.addAttribute("addresses", addresses);
     		LOGGER.info("Added model param mailingAddresses of size: " + userInfo.getMailingAddresses().size());
     	} else {
     		model.addAttribute("userInfo", new UserInfo());
@@ -104,16 +104,25 @@ public class UserInfoController {
     @RequestMapping(value = "/addAddress", method = RequestMethod.POST)
     public String addAccount(HttpSession session,
                              Model model,
-    		@ModelAttribute @Valid MailingAddress address) {
-    	
-    	LOGGER.info("Adding new user address");
+    		                 @ModelAttribute @Valid MailingAddress mailingAddress,
+                             Errors errors) {
+
+        if (errors.hasErrors()) {
+            LOGGER.info("Address form submitted with errors.");
+            model.addAttribute(mailingAddress);
+            model.addAttribute(session.getAttribute("userInfo"));
+            return "account";
+        }
+
+        LOGGER.info("Adding new user mailingAddress");
     	UserInfo userInfo = new UserInfo();
     	if (session.getAttribute("userInfo") != null) {
     		LOGGER.info("Retrieved userInfo object from session.");
     		userInfo = (UserInfo) session.getAttribute("userInfo");
     	}
-    	userInfo.addAddress(address);
-       	LOGGER.info(String.format("Added address %s to userInfo named %s", address.getStreetAddress(), userInfo.getName()));
+    	userInfo.addAddress(mailingAddress);
+       	LOGGER.info(String.format("Added mailingAddress %s to userInfo named %s",
+                mailingAddress.getStreetAddress(), userInfo.getName()));
        	session.setAttribute("userInfo", userInfo);
        	model.addAttribute("userInfo", userInfo);
     	return "redirect:";

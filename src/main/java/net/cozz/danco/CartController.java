@@ -89,14 +89,15 @@ public class CartController {
     @RequestMapping(value = "/checkout", method = {RequestMethod.POST, RequestMethod.GET}) 
     public String checkout(HttpSession session,
     		Model model) {
-    	UserInfo userInfo = (UserInfo) session.getAttribute("userinfo");
-    	LOGGER.info("Retrieved userinfo from session: " + userInfo);
+    	UserInfo userInfo = (UserInfo) session.getAttribute("userInfo");
+    	LOGGER.info("Retrieved userInfo from session: " + userInfo);
     	
     	Enumeration sessionEnumerator = session.getAttributeNames();
     	while (sessionEnumerator.hasMoreElements()) {
     		String attrName = sessionEnumerator.nextElement().toString();
     		model.addAttribute(attrName, session.getAttribute(attrName));
-    		LOGGER.info(String.format("Added %s with value %s to model", attrName, session.getAttribute(attrName).toString()));
+    		LOGGER.info(String.format("Added %s with value %s to model", attrName,
+                    session.getAttribute(attrName).toString()));
     	}
     	
     	if (userInfo != null && userInfo.getMailingAddresses() != null) {
@@ -106,7 +107,8 @@ public class CartController {
     		}
     	}
     	LOGGER.info(String.format("User has %d mailing addresses", userInfo.getMailingAddresses().size()));
-    	LOGGER.info(String.format("User %s has mailing address of %s", userInfo.getName(), userInfo.getDefaultMailingAddress()));
+    	LOGGER.info(String.format("User %s has mailing address of %s", userInfo.getName(),
+                userInfo.getDefaultMailingAddress().toString()));
     	return "checkout";
     }
     

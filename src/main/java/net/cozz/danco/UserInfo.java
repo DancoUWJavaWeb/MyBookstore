@@ -36,7 +36,8 @@ public class UserInfo implements Serializable {
     @Future(message = "Your cc needs to expire in the future.")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date ccExpDate;
-	
+
+    private MailingAddress defaultMailingAddress;
 	private List<MailingAddress> mailingAddresses = new ArrayList<MailingAddress>();
 	private List<String> creditCardNumbers = new ArrayList<String>();
 	
@@ -99,11 +100,13 @@ public class UserInfo implements Serializable {
 		this.mailingAddresses = mailingAddresses;
 	}
 	
-	public String getDefaultMailingAddress() {
+	public MailingAddress getDefaultMailingAddress() {
 		if (mailingAddresses == null || mailingAddresses.isEmpty()) {
-			return "";
-		}
-		return mailingAddresses.get(0).toString();
+			return defaultMailingAddress = null;
+		} else {
+            defaultMailingAddress = mailingAddresses.get(0);
+        }
+		return defaultMailingAddress;
 	}
 	
 	public void addAddress(final MailingAddress address) {
