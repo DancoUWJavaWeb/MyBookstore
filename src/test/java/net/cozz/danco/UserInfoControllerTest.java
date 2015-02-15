@@ -58,11 +58,13 @@ public class UserInfoControllerTest {
     private UserInfoController userInfoController;
 
     private static final String testName = "Elvis";
+    private static final String testPassword = "Presley1";
     private static final String testEmail = "theKing@graceland.net";
     private static final String testStreetAddress = "3734 Elvis Presley Boulevard";
     private static final String testCity = "Memphis";
     private static final String testState = "TN";
     private static final String testZipCode = "38116";
+    private static final String testPhoneNumber = "901-332-3322";
 
 
     @Before
@@ -175,6 +177,7 @@ public class UserInfoControllerTest {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = new GregorianCalendar();
         cal.add(Calendar.MONTH, 1);
+
         MockHttpServletRequestBuilder srb = post("/updateAccount").session(mockSession)
                 .param("name", testName)
                 .param("password", "")
@@ -192,5 +195,20 @@ public class UserInfoControllerTest {
     @Test
     public void testUpdateAccount() throws Exception {
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = new GregorianCalendar();
+        cal.add(Calendar.MONTH, 1);
+
+        MockHttpServletRequestBuilder srb = post("/updateAccount").session(mockSession)
+                .param("name", testName)
+                .param("password", testPassword)
+                .param("emailAddress", testEmail)
+                .param("phoneNumber", testPhoneNumber)
+                .param("creditCard", "4123123412341234")
+                .param("ccExpDate", dateFormat.format(cal.getTime()));
+
+        mockMvc.perform(srb)
+                .andExpect(model().attributeExists("userInfo"))
+                .andExpect(model().attributeHasNoErrors("userInfo"));
     }
 }
