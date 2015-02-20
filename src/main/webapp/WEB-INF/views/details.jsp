@@ -1,12 +1,12 @@
 <%@ include file="include.jsp" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%@ include file="header.jsp" %>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${book.title} Details</title>
-<style>
+<style type="text/css">
 table, th, td {
     border: 1px solid black;
     text-align: left;
@@ -17,9 +17,50 @@ table th {
 } 
 </style>
 
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            $('div.getReviews').click(function() {
+                $.ajax({
+                    type : 'GET',
+                    url : 'reviews',
+                    data : {
+                        'isbn':'${ book.ISBN }'
+                    },
+                    cache : 'false',
+                    success : function(response) {
+                        $.each(response, function(idx) {
+                            $('div.reviews').append(response[idx].text).append("<br>")
+                        });
+                    },
+                    error : function() {
+                        alert('Something bad happened');
+                    }
+                });
+            });
+
+            $('div.addReview').click(function() {
+                $.ajax({
+                    type : 'POST',
+                    url : 'reviews',
+                    data : {
+                        'isbn':'${ book.ISBN }',
+                        'text': 'this is a good book',
+                        'addedDate': '2015-02-28'
+                    },
+                    cache : 'false',
+                    success : function(response) {
+                        $('div.reviews').append(response.text).append("<br>");
+                    },
+                    error : function() {
+                        alert('Something bad happened');
+                    }
+                });
+            });
+        });
+    </script>
+
 </head>
 <body>
-<%@ include file="header.jsp" %>
 
 <table >
     <tr>
@@ -43,6 +84,10 @@ table th {
 	<form action="/">
 		<input type="submit" value="Continue Shopping" >
 	</form>
+
+<div class="getReviews">Show reviews for this book</div>
+<div class="addReview">Add review for this book</div>
+<div class="reviews"></div>
 
 <c:choose>
 	<c:when test="${not empty username}">

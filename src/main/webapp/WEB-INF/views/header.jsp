@@ -1,5 +1,5 @@
 <%@ include file="include.jsp" %>
-<style>
+<style type="text/css">
     .formfield {
     }
 
@@ -8,6 +8,39 @@
         font-size: small;
     }
 </style>
+
+<style type="text/css">
+    body {
+        margin-left: 20px;
+        width: 70%;
+    }
+
+    .link {
+        margin-top: 2em;
+    }
+
+    .details {
+        margin-top: 2em;
+    }
+
+    .image {
+        float: left;
+        margin-right: 1em;
+    }
+
+    .title {
+        font-style: bold;
+        font-size: 1.5em;
+        color: red;
+    }
+
+    .info {
+        height: 2em;
+        max-width: 40em;
+        word-wrap: break-word;
+    }
+</style>
+
 
 <div style="text-align:right">
 <c:choose>

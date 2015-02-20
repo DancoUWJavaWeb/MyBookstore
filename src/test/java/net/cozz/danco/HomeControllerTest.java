@@ -1,6 +1,9 @@
 package net.cozz.danco;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,9 +27,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,6 +52,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
         "file:src/main/webapp/WEB-INF/spring/appServlet/*.xml"})
 public class HomeControllerTest {
     private static final Logger LOGGER = Logger.getLogger(HomeControllerTest.class);
+    private static final String APPLICATION_CONTEXT_FILE_NAME = "src/main/webapp/resources/data/books.xml";
 
     private MockMvc mockMvc;
     private MockHttpSession mockSession;
@@ -71,7 +77,9 @@ public class HomeControllerTest {
 
         mockSession = new MockHttpSession(null, UUID.randomUUID().toString());
 
-        bookManager = new SimpleBookManager();
+
+        BeanFactory beanFactory = new FileSystemXmlApplicationContext(APPLICATION_CONTEXT_FILE_NAME);
+        bookManager = (BookManager) beanFactory.getBean("bookManager");
     }
 
 
@@ -89,10 +97,35 @@ public class HomeControllerTest {
 
 
     @Test
+    public void testHome() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("books"))
+                .andExpect(model().attribute("books", hasSize(3)))
+                .andExpect(model().attribute("books", hasItem(
+                        allOf(
+                                hasProperty("title", is("Neuromancer")),
+                                hasProperty("author", is("William Gibson")),
+                                hasProperty("genre", is("scifi")),
+                                hasProperty("price", is(8.99)),
+                                hasProperty("ISBN", is("978-0441569595"))
+                        ))))
+                .andExpect(model().attribute("books", hasItem(
+                        allOf(
+                                hasProperty("title", is("Foundation")),
+                                hasProperty("author", is("Isaac Asimov")),
+                                hasProperty("genre", is("scifi")),
+                                hasProperty("price", is(14.50)),
+                                hasProperty("ISBN", is("978-0553293357"))
+                        ))))
+                .andExpect(view().name("home"));
+    }
+
+
+    @Test
     public void testBookDetails() throws Exception {
         List<Book> books = bookManager.getBooks();
 
-        //books is null -- need to load the web context as an application context maybe?
         Book book = books.get(0);
 
         MockHttpServletRequestBuilder srb = get("/details").session(mockSession)
@@ -100,7 +133,8 @@ public class HomeControllerTest {
         mockMvc.perform(srb)
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("book"))
-                .andExpect(model().attribute("book", hasProperty("title", is(book.getTitle()))));
+                .andExpect(model().attribute("book", hasProperty("title", is(book.getTitle()))))
+                .andExpect(model().attribute("book", hasProperty("description", is(book.getDescription()))));
     }
 
 }

@@ -9,10 +9,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 
@@ -53,7 +56,8 @@ public class HomeController {
     public void head(ModelMap modelMap) {
 
     }
-	
+
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, 
 			HttpServletRequest requestParam, 
@@ -69,5 +73,51 @@ public class HomeController {
 
 		return "home";
 	}
-	
+
+
+    @ResponseBody
+    @RequestMapping(value = "/reviews", method = RequestMethod.GET)
+    public List<Review> getReviews(@RequestParam String isbn, HttpSession session) {
+        LOGGER.info("Looking for reviews for isbn=" + isbn);
+        List<Review> reviews;
+        List<Review> relevant = new ArrayList<Review>();
+        if (session.getAttribute("reviews") != null) {
+            reviews = (ArrayList<Review>) session.getAttribute("reviews");
+            for (Review r : reviews) {
+                if (isbn.equals(r.getIsbn())) {
+                    relevant.add(r);
+                }
+            }
+        } else {
+            reviews = new ArrayList<Review>();
+        }
+
+        LOGGER.info(String.format("Found %d reviews", reviews.size()));
+        return relevant;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value="/reviews", method=RequestMethod.POST)
+    public Review getAjaxReview(@RequestParam String isbn,
+                                @RequestParam String text,
+                                @RequestParam String addedDate,
+                                HttpSession session) {
+        LOGGER.info("ISBN = " + isbn);
+        Review review = new Review();
+        review.setIsbn(isbn);
+        review.setText(text);
+        review.setAddedDate(addedDate);
+
+        List<Review> reviews;
+        if (session.getAttribute("reviews") != null) {
+            reviews = (ArrayList<Review>) session.getAttribute("reviews");
+        } else {
+            reviews = new ArrayList<Review>();
+        }
+        reviews.add(review);
+        session.setAttribute("reviews", reviews);
+        return review;
+    }
+
 }
