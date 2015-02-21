@@ -14,7 +14,11 @@ table, th, td {
 table th {
     color: white;
     background-color: black;
-} 
+}
+.hidden
+{
+    display: none;
+}
 </style>
 
     <script type="text/javascript">
@@ -39,13 +43,18 @@ table th {
             });
 
             $('div.addReview').click(function() {
+                $('#reviewForm').show();
+            });
+
+            $('div.submitReview').click(function() {
+                var rev = $('#reviewText').val();
+                console.log("adding review text: " + rev);
                 $.ajax({
                     type : 'POST',
                     url : 'reviews',
                     data : {
                         'isbn':'${ book.ISBN }',
-                        'text': 'this is a good book',
-                        'addedDate': '2015-02-28'
+                        'text': rev
                     },
                     cache : 'false',
                     success : function(response) {
@@ -55,6 +64,7 @@ table th {
                         alert('Something bad happened');
                     }
                 });
+                $('#reviewForm').hide();
             });
         });
     </script>
@@ -85,9 +95,15 @@ table th {
 		<input type="submit" value="Continue Shopping" >
 	</form>
 
-<div class="getReviews">Show reviews for this book</div>
+<div class="getReviews">Show all reviews for this book</div>
 <div class="addReview">Add review for this book</div>
 <div class="reviews"></div>
+<br>
+<form:form id="reviewForm" class="hidden">
+    <div><label for="reviewText">Add your review:</label><input id="reviewText" maxlength="240">
+    </div>
+    <div class="submitReview" style="text-decoration: underline">Submit</div>
+</form:form>
 
 <c:choose>
 	<c:when test="${not empty username}">

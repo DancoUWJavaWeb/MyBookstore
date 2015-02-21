@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -46,7 +43,6 @@ public class HomeController {
         model.addAttribute("username", session.getAttribute("username"));
         model.addAttribute("cart", session.getAttribute("cart"));
 		model.addAttribute("book", bookManager.getByTitle(title));
-    	LOGGER.info("Cart param is: " + session.getAttribute("cart") == null ? "empty" : "not empty");
 
 		return "details";
 	}
@@ -101,13 +97,11 @@ public class HomeController {
     @RequestMapping(value="/reviews", method=RequestMethod.POST)
     public Review getAjaxReview(@RequestParam String isbn,
                                 @RequestParam String text,
-                                @RequestParam String addedDate,
                                 HttpSession session) {
-        LOGGER.info("ISBN = " + isbn);
+        LOGGER.info("Adding review for ISBN = " + isbn);
         Review review = new Review();
         review.setIsbn(isbn);
         review.setText(text);
-        review.setAddedDate(addedDate);
 
         List<Review> reviews;
         if (session.getAttribute("reviews") != null) {

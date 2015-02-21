@@ -31,6 +31,11 @@ public class Review implements Serializable {
         this.text = text;
     }
 
+
+    public Review() {
+        this.addedDate = new Date();
+    }
+
     public Date getAddedDate() {
         return addedDate;
     }
