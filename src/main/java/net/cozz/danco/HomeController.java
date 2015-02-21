@@ -88,7 +88,7 @@ public class HomeController {
             reviews = new ArrayList<Review>();
         }
 
-        LOGGER.info(String.format("Found %d reviews", reviews.size()));
+        LOGGER.info(String.format("Found %d reviews", relevant.size()));
         return relevant;
     }
 
