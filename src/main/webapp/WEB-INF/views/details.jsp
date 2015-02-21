@@ -36,7 +36,9 @@ table th {
                         console.log(response.length);
                         $.each(response, function(idx) {
                             $('div.reviews').append(response[idx].text).append("<br>");
-                            $('div.reviews').append("Review posted: " + new Date(response[idx].addedDate)).append("<br>");
+                            $('div.reviews').append("Review posted: " + new Date(response[idx].addedDate))
+                                    .append("<br>")
+                                    .append("<hr>");
                         });
                     },
                     error : function() {
@@ -61,8 +63,8 @@ table th {
                     },
                     cache : 'false',
                     success : function(response) {
-                        $('div.reviews').append(response.text).append("<br>");
-                        $('div.reviews').append("Review posted: " + new Date(response[idx].addedDate)).append("<br>");
+                        $('div.reviews').append("Latest review:").append("<br>");
+                        $('div.reviews').append(response.text).append("<br>").append("<hr>");
                     },
                     error : function() {
                         alert('Something bad happened');
@@ -104,7 +106,9 @@ table th {
 <div class="reviews"></div>
 <br>
 <form:form id="reviewForm" class="hidden">
-    <div><label for="reviewText">Add your review:</label><textarea id="reviewText" rows="3" maxlength="240"></textarea>
+    <div>
+        <label for="reviewText">Add your review:</label><br>
+        <textarea id="reviewText" rows="3" maxlength="340"></textarea>
     </div>
     <div class="submitReview" style="text-decoration: underline">Submit</div>
 </form:form>
