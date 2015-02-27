@@ -1,5 +1,7 @@
 package net.cozz.danco;
 
+import com.sun.tools.javac.tree.JCTree;
+
 import java.util.List;
 
 public class SimpleBookManager implements BookManager {
@@ -42,4 +44,31 @@ public class SimpleBookManager implements BookManager {
 		
 		return target;
 	}
+
+
+    @Override
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+
+    @Override
+    public void updateBook(Book book) {
+        Book target = getByIsbn(book.getISBN());
+        if (target != null) {
+            books.remove(target);
+        }
+        books.add(book);
+    }
+
+
+    @Override
+    public boolean removeBook(String isbn) {
+        Book book = getByIsbn(isbn);
+        if (book != null) {
+            return books.remove(book);
+        }
+
+        return false;
+    }
 }
