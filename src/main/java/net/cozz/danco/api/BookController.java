@@ -1,5 +1,7 @@
-package net.cozz.danco;
+package net.cozz.danco.api;
 
+import net.cozz.danco.Book;
+import net.cozz.danco.BookManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,8 @@ import java.util.List;
 // @RestController automatically makes the methods with request mappings return a response body
 @RestController
 @RequestMapping("/api")     // append the /api string to each request mapping
-public class ApiController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApiController.class.getName());
+public class BookController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class.getName());
 
     @Autowired
     private BookManager bookManager;
@@ -43,7 +45,7 @@ public class ApiController {
     public Object createBook(@RequestBody Book book, HttpServletResponse response) {
         if (bookManager.getByIsbn(book.getISBN()) != null) {
             return new ApiMessage(ApiMessage.MsgType.ERROR,
-                    String.format("Book with isbn %s already exists.", book.getISBN()));
+                    String.format("Book with isbn = %s already exists.", book.getISBN()));
         }
 
         bookManager.addBook(book);
@@ -67,10 +69,10 @@ public class ApiController {
 
         if (success) {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            return new ApiMessage(ApiMessage.MsgType.INFO, String.format("Book with isbn %s removed.", isbn));
+            return new ApiMessage(ApiMessage.MsgType.INFO, String.format("Book with isbn = %s removed.", isbn));
         } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new ApiMessage(ApiMessage.MsgType.ERROR, String.format("Book with isbn %s not found", isbn));
+            return new ApiMessage(ApiMessage.MsgType.ERROR, String.format("Book with isbn = %s not found", isbn));
         }
     }
 }

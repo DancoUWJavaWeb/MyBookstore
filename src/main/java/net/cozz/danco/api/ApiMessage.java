@@ -1,4 +1,4 @@
-package net.cozz.danco;
+package net.cozz.danco.api;
 
 /**
  * Created by costd035 on 2/26/15.
