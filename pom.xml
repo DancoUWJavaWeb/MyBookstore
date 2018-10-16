@@ -20,9 +20,9 @@
         <mockito-core.version>1.10.19</mockito-core.version>
         <hamcrest-all.version>1.3</hamcrest-all.version>
         <junit.version>4.11</junit.version>
-        <jackson-binding.version>2.5.1</jackson-binding.version>
-        <jackson-core.version>2.5.1</jackson-core.version>
-        <jackson-annotations.version>2.5.1</jackson-annotations.version>
+        <jackson-binding.version>[2.6.7.1,)</jackson-binding.version>
+        <jackson-core.version>[2.6.7.1,)</jackson-core.version>
+        <jackson-annotations.version>[2.6.7.1,)</jackson-annotations.version>
     </properties>
 
     <dependencies>
